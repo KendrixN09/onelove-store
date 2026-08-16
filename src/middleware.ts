@@ -30,5 +30,6 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/dashboard/:path*', '/api/admin/:path*'],
+  // Login must stay reachable while logged out, or nobody could ever sign in.
+  matcher: ['/admin/dashboard/:path*', '/api/admin/((?!login).*)'],
 };

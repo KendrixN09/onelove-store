@@ -147,6 +147,9 @@ export default async function HomePage() {
                   <span>Email us at cori.mal.lopez@gmail.com</span>
                 </details>
               </li>
+              <li>
+                <a href="/admin">Admin</a>
+              </li>
             </ul>
           </div>
         </div>
