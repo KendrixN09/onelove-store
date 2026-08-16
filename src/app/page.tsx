@@ -142,7 +142,10 @@ export default async function HomePage() {
             <h4>Info</h4>
             <ul>
               <li>
-                <a href="mailto:hello@onelove.co">Contact</a>
+                <details className="contact-popover">
+                  <summary>Contact</summary>
+                  <span>Email us at cori.mal.lopez@gmail.com</span>
+                </details>
               </li>
             </ul>
           </div>
