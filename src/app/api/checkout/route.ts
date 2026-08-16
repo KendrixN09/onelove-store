@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { stripeClient } from '@/lib/stripe';
 import { supabaseAdmin } from '@/lib/supabase';
 
-type CartLine = { productId: string; qty: number };
+type CartLine = { productId: string; size: string; qty: number };
 
 // Prices are re-read from the database here, never trusted from the client -
 // a request could otherwise claim any price it wants for a given product id.
@@ -38,9 +38,9 @@ export async function POST(req: NextRequest) {
           currency: 'usd',
           unit_amount: product.price_cents,
           product_data: {
-            name: product.name,
+            name: `${product.name} — Size ${line.size}`,
             images: image ? [new URL(image, origin).toString()] : undefined,
-            metadata: { product_id: product.id },
+            metadata: { product_id: product.id, size: line.size },
           },
         },
       };

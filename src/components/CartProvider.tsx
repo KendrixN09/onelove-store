@@ -4,6 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 
 export type CartItem = {
   productId: string;
+  size: string;
   name: string;
   priceCents: number;
   image: string;
@@ -16,8 +17,8 @@ type CartContextValue = {
   openCart: () => void;
   closeCart: () => void;
   addItem: (item: Omit<CartItem, 'qty'>, qty?: number) => void;
-  removeItem: (productId: string) => void;
-  setQty: (productId: string, qty: number) => void;
+  removeItem: (productId: string, size: string) => void;
+  setQty: (productId: string, size: string, qty: number) => void;
   subtotalCents: number;
   count: number;
 };
@@ -47,22 +48,24 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const addItem = useCallback((item: Omit<CartItem, 'qty'>, qty = 1) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.productId === item.productId);
+      const existing = prev.find((i) => i.productId === item.productId && i.size === item.size);
       if (existing) {
-        return prev.map((i) => (i.productId === item.productId ? { ...i, qty: i.qty + qty } : i));
+        return prev.map((i) => (i.productId === item.productId && i.size === item.size ? { ...i, qty: i.qty + qty } : i));
       }
       return [...prev, { ...item, qty }];
     });
     setIsOpen(true);
   }, []);
 
-  const removeItem = useCallback((productId: string) => {
-    setItems((prev) => prev.filter((i) => i.productId !== productId));
+  const removeItem = useCallback((productId: string, size: string) => {
+    setItems((prev) => prev.filter((i) => !(i.productId === productId && i.size === size)));
   }, []);
 
-  const setQty = useCallback((productId: string, qty: number) => {
+  const setQty = useCallback((productId: string, size: string, qty: number) => {
     setItems((prev) =>
-      qty <= 0 ? prev.filter((i) => i.productId !== productId) : prev.map((i) => (i.productId === productId ? { ...i, qty } : i))
+      qty <= 0
+        ? prev.filter((i) => !(i.productId === productId && i.size === size))
+        : prev.map((i) => (i.productId === productId && i.size === size ? { ...i, qty } : i))
     );
   }, []);
 

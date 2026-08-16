@@ -43,6 +43,7 @@ async function recordOrder(session: Stripe.Checkout.Session) {
     return {
       product_id: (product?.metadata?.product_id as string) ?? null,
       name: li.description ?? product?.name ?? 'Item',
+      size: (product?.metadata?.size as string) ?? null,
       price_cents: li.price?.unit_amount ?? 0,
       qty: li.quantity ?? 1,
       image_url: product?.images?.[0] ?? null,

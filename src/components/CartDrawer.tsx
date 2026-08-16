@@ -19,7 +19,7 @@ export function CartDrawer() {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ items: items.map((i) => ({ productId: i.productId, qty: i.qty })) }),
+        body: JSON.stringify({ items: items.map((i) => ({ productId: i.productId, size: i.size, qty: i.qty })) }),
       });
       const data = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error ?? 'Checkout failed');
@@ -43,21 +43,22 @@ export function CartDrawer() {
         <div className="cart-items">
           {items.length === 0 && <p className="cart-empty">Your bag is empty.</p>}
           {items.map((item) => (
-            <div className="cart-line" key={item.productId}>
+            <div className="cart-line" key={`${item.productId}-${item.size}`}>
               {item.image && <img src={item.image} alt={item.name} />}
               <div className="cart-line-info">
                 <h4>{item.name}</h4>
+                <span className="cart-line-size">Size {item.size}</span>
                 <span>{formatPrice(item.priceCents)}</span>
                 <div className="cart-qty">
-                  <button onClick={() => setQty(item.productId, item.qty - 1)} aria-label="Decrease quantity">
+                  <button onClick={() => setQty(item.productId, item.size, item.qty - 1)} aria-label="Decrease quantity">
                     −
                   </button>
                   <span>{item.qty}</span>
-                  <button onClick={() => setQty(item.productId, item.qty + 1)} aria-label="Increase quantity">
+                  <button onClick={() => setQty(item.productId, item.size, item.qty + 1)} aria-label="Increase quantity">
                     +
                   </button>
                 </div>
-                <button className="cart-remove" onClick={() => removeItem(item.productId)}>
+                <button className="cart-remove" onClick={() => removeItem(item.productId, item.size)}>
                   Remove
                 </button>
               </div>

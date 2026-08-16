@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { useCart } from './CartProvider';
 
+const SIZES = ['S', 'M', 'L', 'XL', 'XXL'];
+
 export function ProductCard({
   productId,
   name,
@@ -27,6 +29,8 @@ export function ProductCard({
   const frameRef = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
   const [added, setAdded] = useState(false);
+  const [size, setSize] = useState<string | null>(null);
+  const [sizeError, setSizeError] = useState(false);
 
   useEffect(() => {
     const card = cardRef.current;
@@ -74,7 +78,11 @@ export function ProductCard({
   }, []);
 
   function handleAdd() {
-    addItem({ productId, name, priceCents, image });
+    if (!size) {
+      setSizeError(true);
+      return;
+    }
+    addItem({ productId, size, name, priceCents, image });
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
   }
@@ -97,6 +105,22 @@ export function ProductCard({
         </div>
         <div className="card-price">{priceLabel}</div>
       </div>
+      <div className="size-picker" role="group" aria-label="Select a size">
+        {SIZES.map((s) => (
+          <button
+            key={s}
+            type="button"
+            className={`size-btn${size === s ? ' selected' : ''}`}
+            onClick={() => {
+              setSize(s);
+              setSizeError(false);
+            }}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+      {sizeError && <span className="size-error">Pick a size first</span>}
       <div className="card-cta">
         <button onClick={handleAdd}>{added ? 'Added ✓' : 'Add to bag →'}</button>
         <span className="stock-note">{colorwayLabel}</span>

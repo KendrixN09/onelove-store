@@ -349,6 +349,17 @@ section { position: relative; z-index: 2; }
 .card-meta .swatches { display: flex; gap: 0.4rem; margin-top: 0.5rem; }
 .swatch { width: 16px; height: 16px; border-radius: 50%; border: 1px solid var(--line); }
 .card-price { font-family: 'Arial Narrow', 'Helvetica Neue Condensed Bold', sans-serif; font-weight: 800; font-size: 1.6rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.size-picker { display: flex; gap: 0.4rem; margin-top: 1rem; flex-wrap: wrap; }
+.size-btn {
+  min-width: 2.4rem; padding: 0.35rem 0.5rem; background: none; cursor: pointer;
+  border: 1px solid var(--line); color: var(--fg);
+  font-family: 'Arial Narrow', 'Helvetica Neue Condensed Bold', sans-serif;
+  font-weight: 700; font-size: 0.8rem; letter-spacing: 0.04em; transition: background 0.15s ease, color 0.15s ease;
+}
+.size-btn:hover { background: var(--card-bg); }
+.size-btn.selected { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.size-error { display: block; margin-top: 0.4rem; font-size: 0.72rem; color: #b3261e; font-family: Georgia, serif; font-style: italic; }
+.cart-line-size { font-size: 0.78rem; color: var(--fg-soft); }
 .card-cta { margin-top: 1.3rem; display: flex; justify-content: space-between; align-items: center; padding-top: 1.1rem; border-top: 1px solid var(--line); }
 .card-cta button {
   background: none; border: none; cursor: pointer; text-decoration: none;

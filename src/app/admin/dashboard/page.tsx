@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-type OrderItem = { product_id: string; name: string; price_cents: number; qty: number; image_url: string | null };
+type OrderItem = { product_id: string; name: string; size: string | null; price_cents: number; qty: number; image_url: string | null };
 type Order = {
   id: string;
   created_at: string;
@@ -142,8 +142,9 @@ function OrdersTable({ orders, onUpdate }: { orders: Order[]; onUpdate: (id: str
               </td>
               <td>
                 {o.items.map((i) => (
-                  <div key={i.product_id}>
+                  <div key={`${i.product_id}-${i.size ?? ''}`}>
                     {i.qty}× {i.name}
+                    {i.size ? ` (${i.size})` : ''}
                   </div>
                 ))}
               </td>
